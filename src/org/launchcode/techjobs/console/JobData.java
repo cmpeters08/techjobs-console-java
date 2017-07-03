@@ -10,6 +10,7 @@ import java.io.Reader;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by LaunchCode
@@ -69,21 +70,61 @@ public class JobData {
 
         // load data, if not already loaded
         loadData();
+        value = value.toLowerCase();
 
         ArrayList<HashMap<String, String>> jobs = new ArrayList<>();
 
         for (HashMap<String, String> row : allJobs) {
 
             String aValue = row.get(column);
+            aValue= aValue.toLowerCase();
 
             if (aValue.contains(value)) {
                 jobs.add(row);
+                break;
             }
         }
 
         return jobs;
     }
 
+
+    public static ArrayList<HashMap<String, String>> findByValue(String value) {
+        // similar to above, loop through all jobs
+        loadData();
+        ArrayList<HashMap<String, String>> myArray = new ArrayList<>();
+        //String aValue = value.substring(0, 1).toUpperCase() + value.substring(1);
+
+
+        for (HashMap<String, String> job : allJobs) {
+          for(Map.Entry<String, String> aJob : job.entrySet()){
+
+               String searchTerm = value.toLowerCase();
+               String jobValue = aJob.getValue();
+
+               jobValue = jobValue.toLowerCase();
+               //jobvalue is what's pulled from jobdata
+
+
+
+                if (jobValue.contains(searchTerm)){
+                  myArray.add(job);
+                  break;
+              }
+
+            }
+    //sending it to printjobs which is expecting an arraylist of hashmaps
+        }
+
+        if (myArray.isEmpty()) {
+            myArray.add(null);
+        }
+
+        return myArray;
+        // for each job, loop through each job HashMap
+        //for each column, check for a match
+        //when we find a match, break;
+    }
     /**
      * Read in data from a CSV file and store it in a list
      */
