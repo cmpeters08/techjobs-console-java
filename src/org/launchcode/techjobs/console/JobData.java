@@ -92,38 +92,30 @@ public class JobData {
     public static ArrayList<HashMap<String, String>> findByValue(String value) {
         // similar to above, loop through all jobs
         loadData();
-        ArrayList<HashMap<String, String>> myArray = new ArrayList<>();
-        //String aValue = value.substring(0, 1).toUpperCase() + value.substring(1);
-
+        ArrayList<HashMap<String, String>> eachJobArray = new ArrayList<>();
+        String searchTerm = value.toLowerCase();
 
         for (HashMap<String, String> job : allJobs) {
-          for(Map.Entry<String, String> aJob : job.entrySet()){
+            for (Map.Entry<String, String> aJob : job.entrySet()) {
 
-               String searchTerm = value.toLowerCase();
-               String jobValue = aJob.getValue();
+                String jobValue = aJob.getValue().toLowerCase();
 
-               jobValue = jobValue.toLowerCase();
-               //jobvalue is what's pulled from jobdata
-
-
-
-                if (jobValue.contains(searchTerm)){
-                  myArray.add(job);
-                  break;
-              }
-
+                if (jobValue.contains(searchTerm)) {
+                    eachJobArray.add(job);
+                    break;
+                }
             }
-    //sending it to printjobs which is expecting an arraylist of hashmaps
         }
-
-        if (myArray.isEmpty()) {
-            myArray.add(null);
+        if (eachJobArray.isEmpty()) {
+            eachJobArray.add(null);
         }
-
-        return myArray;
-        // for each job, loop through each job HashMap
-        //for each column, check for a match
-        //when we find a match, break;
+        //sending eachJobArray to printJobs in TechJobs, which is expecting an ArrayList of Hashmaps.
+        return eachJobArray;
+          /*
+            adding a null to eachJobArray if the searchTerm is not contained in allJobs
+            printJobs does not handle empty ArrayLists well
+            sending through a null arrayList will help printJobs execute properly.
+          */
     }
     /**
      * Read in data from a CSV file and store it in a list
@@ -167,3 +159,4 @@ public class JobData {
     }
 
 }
+
